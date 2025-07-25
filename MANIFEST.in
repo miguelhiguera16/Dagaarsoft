@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include waafipay_integration *.css
+recursive-include waafipay_integration *.csv
+recursive-include waafipay_integration *.html
+recursive-include waafipay_integration *.ico
+recursive-include waafipay_integration *.js
+recursive-include waafipay_integration *.json
+recursive-include waafipay_integration *.md
+recursive-include waafipay_integration *.png
+recursive-include waafipay_integration *.py
+recursive-include waafipay_integration *.svg
+recursive-include waafipay_integration *.txt
+recursive-exclude waafipay_integration *.pyc
