@@ -12,7 +12,9 @@ app_license = "MIT"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/waafipay_integration/css/waafipay_integration.css"
-# app_include_js = "/assets/waafipay_integration/js/waafipay_integration.js"
+app_include_js = [
+    "/assets/waafipay_integration/js/waafipay_payment_handler.js",
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/waafipay_integration/css/waafipay_integration.css"
@@ -118,13 +120,11 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-#	"*": {
-#		"on_update": "method",
-#		"on_cancel": "method",
-#		"on_trash": "method"
-#	}
-# }
+doc_events = {
+    "Payment Request": {
+        "after_insert": "waafipay_integration.waafipay.waafipay_client.generate_payment_link",
+    }
+}
 
 # Scheduled Tasks
 # ---------------
@@ -155,9 +155,9 @@ app_license = "MIT"
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-#	"frappe.desk.doctype.event.event.get_events": "waafipay_integration.event.get_events"
-# }
+override_whitelisted_methods = {
+	"waafipay/callback": "waafipay_integration.waafipay.api.callback",
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
@@ -215,3 +215,7 @@ app_license = "MIT"
 # auth_hooks = [
 #	"waafipay_integration.auth.validate"
 # ]
+
+payment_gateway_controller = [
+    "WaafiPay Settings=waafipay_integration.waafipay_integration.payment_gateways.waafipay.WaafiPaySettings"
+]
