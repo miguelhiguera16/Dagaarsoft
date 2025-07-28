@@ -17,8 +17,8 @@ class WaafiPayCredentials(Document):
 
     def request_for_payment(self, **kwargs):
         """
-        Ejecutado cuando se presiona el botón Request en POS
-        invoice_doc: dict o Document del Sales Invoice con pagos y datos
+        Eject when is pressed the button Request in POS
+        invoice_doc: dict or Document of Sales Invoice with payments and data
         """
         sales_invoice = kwargs.get("payment_reference")
 
@@ -101,9 +101,9 @@ class WaafiPayCredentials(Document):
 
         if status == "Success":
             try:
-                # Limpiar tabla payments para que no tenga pagos con monto > 0
+                # Clear payments table
                 invoice_doc.payments = []
-                # Agregar modo de pago actual con monto 0
+                # Add current payment method with 0 amount
                 invoice_doc.append("payments", {
                     "mode_of_payment": waafipay_payment.mode_of_payment,
                     "amount": 0.0,
@@ -156,3 +156,44 @@ class WaafiPayCredentials(Document):
 
         if frappe.db.exists(doctype, sales_invoice):
             return frappe.get_doc(doctype, sales_invoice)
+
+    def commit_authorized_payment(self, transaction_id, description=""):
+        """
+        Commit a previously authorized transaction by WaafiPay
+        """
+        client = WaafiPayClient(self.name)
+
+        # Prepare payload according to WaafiPay docs
+        payload = client._generate_common_payload()
+        payload.update({
+            "serviceName": "API_PREAUTHORIZE_COMMIT",
+            "serviceParams": {
+                "merchantUid": client.merchant_uid,
+                "apiUserId": client.api_user_id,
+                "apiKey": client.api_key,
+                "transactionId": transaction_id,
+                "description": description or f"Commit of transaction {transaction_id}"
+            }
+        })
+
+        # Log the commit attempt
+        log_doc = self.create_waafipay_log(
+            status="Commit Initiated",
+            request_payload=payload,
+            sales_invoice=None
+        )
+
+        try:
+            response = client.send_request(payload)
+        except Exception as e:
+            log_doc.status = "Commit Failed"
+            log_doc.response_data = frappe.as_json({"error": str(e)})
+            log_doc.save(ignore_permissions=True)
+            frappe.throw(f"WaafiPay commit request failed: {e}")
+
+        status = "Success" if response.get("responseCode") == "2001" else "Failed"
+        log_doc.status = status
+        log_doc.response_data = frappe.as_json(response)
+        log_doc.save(ignore_permissions=True)
+
+        return response

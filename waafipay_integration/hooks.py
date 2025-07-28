@@ -31,7 +31,9 @@ app_include_js = [
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+    "Payment Request" : "public/js/payment_request.js"
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -112,9 +114,9 @@ app_include_js = [
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-#	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Payment Request": "waafipay_integration.overrides.payment_request.PaymentRequest",
+}
 
 # Document Events
 # ---------------
@@ -122,9 +124,27 @@ app_include_js = [
 
 doc_events = {
     "Payment Request": {
-        "after_insert": "waafipay_integration.waafipay.waafipay_client.generate_payment_link",
+        # "on_submit": "waafipay_integration.waafipay.waafipay_client.generate_payment_link",
     }
 }
+
+
+fixtures = [
+    {
+        "doctype": "Web Page",
+        "filters": [
+            [
+                "name",
+                "in",
+                (
+                    "waafipay-payment-success",
+                    "waafipay-payment-failure",
+                ),
+            ]
+        ],
+    },
+]
+
 
 # Scheduled Tasks
 # ---------------
@@ -157,6 +177,7 @@ doc_events = {
 #
 override_whitelisted_methods = {
 	"waafipay/callback": "waafipay_integration.waafipay.api.callback",
+    "erpnext.accounts.doctype.payment_request.payment_request.make_payment_request": "waafipay_integration.overrides.payment_request.make_payment_request",
 }
 #
 # each overriding function accepts a `data` argument;
