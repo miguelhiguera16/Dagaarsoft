@@ -158,11 +158,12 @@ def get_credentials(payment_gateway_account):
 
 @frappe.whitelist(allow_guest=True)
 def callback(**kwargs):
-    pass
+    return
 
-
+# Success callback
 @frappe.whitelist(allow_guest=True)
 def payment_received(**kwargs):
+
     waafipay_log = None
 
     if kwargs.get("responseCode") == "2001":
@@ -190,15 +191,9 @@ def payment_received(**kwargs):
                         waafipay_log.status = "Failed"
                         waafipay_log.error_message = e
                         waafipay_log.db_update()
-                        frappe.local.response["type"] = "redirect"
-                        frappe.local.response["location"] = "/waafipay-payment-failure"
-                        return
                     else:
                         waafipay_log.status = "Success"
                         waafipay_log.db_update()
-                        frappe.local.response["type"] = "redirect"
-                        frappe.local.response["location"] = "/waafipay-payment-success"
-                        return
                 except Exception as e:
                     waafipay_log.status = "Failed"
                     waafipay_log.error_message = e
@@ -224,25 +219,14 @@ def payment_received(**kwargs):
                             waafipay_log.status = "Failed"
                             waafipay_log.error_message = str(e)
                             waafipay_log.db_update()
-                            frappe.local.response["type"] = "redirect"
-                            frappe.local.response["location"] = "/waafipay-payment-failure"
-                            return
-                        else:
-                            frappe.local.response["type"] = "redirect"
-                            frappe.local.response["location"] = "/waafipay-payment-success"
-                            return
                 except Exception as e:
                     waafipay_log.status = "Failed"
                     waafipay_log.error_message = str(e)
                     waafipay_log.db_update()
-                    frappe.local.response["type"] = "redirect"
-                    frappe.local.response["location"] = "/waafipay-payment-failure"
-                    return
             else:
                 waafipay_log.status = "Failed"
                 waafipay_log.error_message = f"Payment Request {payment_request} not found"
                 waafipay_log.db_update()
-                return
 
     else:
         if not waafipay_log:
@@ -256,9 +240,7 @@ def payment_received(**kwargs):
             "error_message": kwargs.get("responseMsg"),
         })
         waafipay_log.save()
-        frappe.local.response["type"] = "redirect"
-        frappe.local.response["location"] = "/waafipay-payment-failure"
-        return
+
 
 
 @frappe.whitelist(allow_guest=True)
@@ -294,10 +276,11 @@ def try_again(log_name):
         log.db_update()
 
 
+# Failure callback
 @frappe.whitelist(allow_guest=True)
 def failure_callback(**kwargs):
     
-    # create waafipay log
+    # # create waafipay log
     waafipay_log = frappe.new_doc("WaafiPay Log")
     waafipay_log.update({
         "status": "Failed",
@@ -308,7 +291,7 @@ def failure_callback(**kwargs):
     waafipay_log.flags.ignore_permissions = True
     waafipay_log.save()
 
-
     frappe.local.response["type"] = "redirect"
     frappe.local.response["location"] = "/waafipay-payment-failure"
-    return
+
+    

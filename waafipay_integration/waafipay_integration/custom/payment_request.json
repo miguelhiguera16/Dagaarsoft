@@ -208,7 +208,7 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
-   "idx": 43,
+   "idx": 44,
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -218,7 +218,7 @@
    "insert_after": "mute_email",
    "is_system_generated": 0,
    "is_virtual": 0,
-   "label": "Create Payment Request",
+   "label": "Create Payment Link",
    "length": 0,
    "mandatory_depends_on": null,
    "modified": "2025-07-27 19:02:39.293727",
@@ -254,7 +254,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2025-07-27 19:02:39.008386",
+   "creation": "2025-07-28 23:58:18.406034",
    "default_value": null,
    "doc_type": "Payment Request",
    "docstatus": 0,
@@ -262,7 +262,7 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
-   "modified": "2025-07-27 19:02:39.008386",
+   "modified": "2025-07-28 23:58:18.406034",
    "modified_by": "Administrator",
    "module": null,
    "name": "Payment Request-main-field_order",
@@ -270,7 +270,7 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
-   "value": "[\"payment_request_type\", \"transaction_date\", \"column_break_2\", \"naming_series\", \"mode_of_payment\", \"party_details\", \"party_type\", \"party\", \"column_break_4\", \"reference_doctype\", \"reference_name\", \"transaction_details\", \"grand_total\", \"is_a_subscription\", \"column_break_18\", \"currency\", \"subscription_section\", \"subscription_plans\", \"bank_account_details\", \"bank_account\", \"bank\", \"bank_account_no\", \"account\", \"column_break_11\", \"iban\", \"branch_code\", \"swift_number\", \"accounting_dimensions_section\", \"cost_center\", \"dimension_col_break\", \"project\", \"recipient_and_message\", \"print_format\", \"email_to\", \"subject\", \"column_break_9\", \"payment_gateway_account\", \"status\", \"make_sales_invoice\", \"section_break_10\", \"message\", \"message_examples\", \"mute_email\", null, \"payment_url\", \"waafipay_payment_link\", \"copy_waafipay_payment_link\", \"open_waafipay_payment_link\", \"section_break_7\", \"payment_gateway\", \"payment_account\", \"payment_channel\", \"payment_order\", \"amended_from\"]"
+   "value": "[\"payment_request_type\", \"transaction_date\", \"column_break_2\", \"naming_series\", \"mode_of_payment\", \"party_details\", \"party_type\", \"party\", \"column_break_4\", \"reference_doctype\", \"reference_name\", \"transaction_details\", \"grand_total\", \"is_a_subscription\", \"column_break_18\", \"currency\", \"subscription_section\", \"subscription_plans\", \"bank_account_details\", \"bank_account\", \"bank\", \"bank_account_no\", \"account\", \"column_break_11\", \"iban\", \"branch_code\", \"swift_number\", \"accounting_dimensions_section\", \"cost_center\", \"dimension_col_break\", \"project\", \"recipient_and_message\", \"print_format\", \"email_to\", \"subject\", \"column_break_9\", \"payment_gateway_account\", \"status\", \"make_sales_invoice\", \"section_break_10\", \"message\", \"message_examples\", \"mute_email\", \"create_payment_request\", \"payment_url\", \"waafipay_payment_link\", \"copy_waafipay_payment_link\", \"open_waafipay_payment_link\", \"section_break_7\", \"payment_gateway\", \"payment_account\", \"payment_channel\", \"payment_order\", \"amended_from\"]"
   }
  ],
  "sync_on_migrate": 1

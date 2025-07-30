@@ -13,7 +13,7 @@ app_license = "MIT"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/waafipay_integration/css/waafipay_integration.css"
 app_include_js = [
-    "/assets/waafipay_integration/js/waafipay_payment_handler.js",
+    # "/assets/waafipay_integration/js/waafipay_payment_handler.js",
 ]
 
 # include js, css files in header of web template
@@ -178,6 +178,7 @@ fixtures = [
 override_whitelisted_methods = {
 	"waafipay/callback": "waafipay_integration.waafipay.api.callback",
     "erpnext.accounts.doctype.payment_request.payment_request.make_payment_request": "waafipay_integration.overrides.payment_request.make_payment_request",
+    "posawesome.posawesome.api.posapp.create_payment_request": "waafipay_integration.api.create_payment_request",
 }
 #
 # each overriding function accepts a `data` argument;
